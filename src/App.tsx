@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Landing from './pages/Landing';
+import Login from './pages/Login';
 import Sidebar from './components/Sidebar';
 import Dashboard from './pages/Dashboard';
 import CoreHR from './pages/CoreHR';
@@ -20,11 +22,18 @@ import GlobalMobility from './pages/GlobalMobility';
 import WFM from './pages/WFM';
 
 export default function App() {
-  const [currentPage, setCurrentPage] = useState('dashboard');
+  const [currentPage, setCurrentPage] = useState('landing');
   const [sidebarOpen, setSidebarOpen] = useState(true);
+
+  const navigate = (page: string) => {
+    setCurrentPage(page);
+    window.scrollTo(0, 0);
+  };
 
   const renderPage = () => {
     switch (currentPage) {
+      case 'landing': return <Landing navigate={navigate} />;
+      case 'login': return <Login navigate={navigate} />;
       case 'dashboard': return <Dashboard />;
       case 'core-hr': return <CoreHR />;
       case 'time-tracking': return <TimeTracking />;
@@ -42,7 +51,7 @@ export default function App() {
       case 'third-party': return <ThirdParty />;
       case 'global-mobility': return <GlobalMobility />;
       case 'wfm': return <WFM />;
-      default: return <Dashboard />;
+      default: return <Landing navigate={navigate} />;
     }
   };
 
@@ -66,6 +75,23 @@ export default function App() {
     'wfm': 'Planejamento de Força de Trabalho',
   };
 
+  // Landing e Login não têm sidebar
+  if (currentPage === 'landing' || currentPage === 'login') {
+    return (
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={currentPage}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
+        >
+          {renderPage()}
+        </motion.div>
+      </AnimatePresence>
+    );
+  }
+
   return (
     <div className="flex h-screen bg-gray-50 overflow-hidden">
       <Sidebar
@@ -85,11 +111,17 @@ export default function App() {
               </svg>
             </button>
             <div>
-              <h1 className="text-lg font-semibold text-gray-800">{pageTitle[currentPage]}</h1>
+              <h1 className="text-lg font-semibold text-gray-800">{pageTitle[currentPage] || 'Dashboard'}</h1>
               <p className="text-sm text-gray-500">Competência: Janeiro/2026</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
+            <button
+              onClick={() => navigate('landing')}
+              className="px-3 py-1.5 text-sm text-gray-600 hover:text-gray-900 transition-colors"
+            >
+              Sair
+            </button>
             <button className="relative p-2 rounded-lg hover:bg-gray-100 transition-colors">
               <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
