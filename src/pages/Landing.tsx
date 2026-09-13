@@ -505,25 +505,153 @@ export default function Landing({ navigate }: LandingProps) {
       </section>
 
       {/* ─── SECTION 9: INTEGRATIONS ─── */}
-      <section className="py-20 px-4">
-        <div className="max-w-7xl mx-auto text-center">
-          <span className="text-sm font-medium text-violet-600 uppercase tracking-wide">Integrações</span>
-          <h2 className="mt-2 text-3xl sm:text-4xl font-bold">Conecta com tudo que você usa</h2>
-          <p className="mt-4 text-gray-600 max-w-2xl mx-auto">API aberta e integrações nativas com os principais sistemas do mercado</p>
-          <div className="mt-12 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-4">
-            {['SAP', 'TOTVS', 'Oracle', 'Gupy', 'LinkedIn', 'Slack', 'Teams', 'Google', 'Microsoft', 'Zoom', 'Jira', 'Power BI'].map((integration, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.03 }}
-                className="p-4 bg-gray-50 rounded-xl border border-gray-100 hover:border-violet-200 hover:bg-violet-50/50 transition-all"
-              >
-                <span className="text-sm font-medium text-gray-600">{integration}</span>
-              </motion.div>
-            ))}
+      <section className="py-20 px-4 bg-gradient-to-b from-white to-violet-50/30">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <span className="text-sm font-medium text-violet-600 uppercase tracking-wide">Integrações</span>
+            <h2 className="mt-2 text-3xl sm:text-4xl font-bold">Conecta com tudo que você usa</h2>
+            <p className="mt-4 text-gray-600 max-w-2xl mx-auto">API aberta e integrações nativas com os principais sistemas do mercado</p>
           </div>
+
+          {/* Categorias */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            {/* ERP & Contábil */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm hover:shadow-lg transition-all"
+            >
+              <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center mb-4">
+                <span className="text-2xl">🏢</span>
+              </div>
+              <h3 className="text-lg font-semibold text-gray-800 mb-2">ERP & Contábil</h3>
+              <p className="text-sm text-gray-600 mb-4">Integração completa com sistemas de gestão empresarial</p>
+              <div className="grid grid-cols-2 gap-2">
+                {['SAP', 'TOTVS', 'Oracle', 'Sage', 'Senior', 'Datasul'].map((tool, i) => (
+                  <div key={i} className="px-3 py-2 bg-gray-50 rounded-lg text-xs font-medium text-gray-700 text-center hover:bg-blue-50 hover:text-blue-700 transition-colors cursor-pointer">
+                    {tool}
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* Recrutamento & RH */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm hover:shadow-lg transition-all"
+            >
+              <div className="w-12 h-12 bg-gradient-to-br from-violet-500 to-purple-600 rounded-xl flex items-center justify-center mb-4">
+                <span className="text-2xl">🎯</span>
+              </div>
+              <h3 className="text-lg font-semibold text-gray-800 mb-2">Recrutamento & RH</h3>
+              <p className="text-sm text-gray-600 mb-4">Conecte com plataformas de talentos e redes profissionais</p>
+              <div className="grid grid-cols-2 gap-2">
+                {['Gupy', 'LinkedIn', 'Indeed', 'Catho', 'Vagas.com', 'Glassdoor'].map((tool, i) => (
+                  <div key={i} className="px-3 py-2 bg-gray-50 rounded-lg text-xs font-medium text-gray-700 text-center hover:bg-violet-50 hover:text-violet-700 transition-colors cursor-pointer">
+                    {tool}
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* Comunicação & Colaboração */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm hover:shadow-lg transition-all"
+            >
+              <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center mb-4">
+                <span className="text-2xl">💬</span>
+              </div>
+              <h3 className="text-lg font-semibold text-gray-800 mb-2">Comunicação</h3>
+              <p className="text-sm text-gray-600 mb-4">Integração com ferramentas de comunicação e produtividade</p>
+              <div className="grid grid-cols-2 gap-2">
+                {['Slack', 'Teams', 'Google Workspace', 'Zoom', 'WhatsApp', 'Telegram'].map((tool, i) => (
+                  <div key={i} className="px-3 py-2 bg-gray-50 rounded-lg text-xs font-medium text-gray-700 text-center hover:bg-emerald-50 hover:text-emerald-700 transition-colors cursor-pointer">
+                    {tool}
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Mais Ferramentas */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3 }}
+            className="bg-white rounded-2xl p-8 border border-gray-100 shadow-sm"
+          >
+            <h3 className="text-lg font-semibold text-gray-800 mb-6 text-center">E muito mais ferramentas</h3>
+            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-3">
+              {[
+                { name: 'Power BI', icon: '📊' },
+                { name: 'Jira', icon: '🎫' },
+                { name: 'Trello', icon: '📋' },
+                { name: 'Asana', icon: '✅' },
+                { name: 'Notion', icon: '📝' },
+                { name: 'Monday', icon: '📅' },
+                { name: 'HubSpot', icon: '🎯' },
+                { name: 'Salesforce', icon: '☁️' },
+                { name: 'Zendesk', icon: '🎧' },
+                { name: 'Freshdesk', icon: '💬' },
+                { name: 'Stripe', icon: '💳' },
+                { name: 'PayPal', icon: '💰' },
+                { name: 'DocuSign', icon: '✍️' },
+                { name: 'Adobe Sign', icon: '📄' },
+                { name: 'Dropbox', icon: '📦' },
+                { name: 'OneDrive', icon: '☁️' },
+              ].map((tool, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.02 }}
+                  className="p-3 bg-gray-50 rounded-xl border border-gray-100 hover:border-violet-200 hover:bg-violet-50/50 hover:shadow-md transition-all cursor-pointer group"
+                >
+                  <div className="text-2xl mb-1 group-hover:scale-110 transition-transform">{tool.icon}</div>
+                  <p className="text-xs font-medium text-gray-700 group-hover:text-violet-600 transition-colors">{tool.name}</p>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* API Info */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.4 }}
+            className="mt-12 bg-gradient-to-r from-violet-600 to-indigo-600 rounded-2xl p-8 text-white"
+          >
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+              <div className="md:col-span-2">
+                <h3 className="text-2xl font-bold mb-3">API Aberta e Documentação Completa</h3>
+                <p className="text-violet-100 mb-4">
+                  Desenvolva integrações personalizadas com nossa API RESTful completa. Documentação detalhada, SDKs para múltiplas linguagens e suporte técnico dedicado.
+                </p>
+                <div className="flex flex-wrap gap-3">
+                  <span className="px-3 py-1 bg-white/20 rounded-full text-sm">REST API</span>
+                  <span className="px-3 py-1 bg-white/20 rounded-full text-sm">Webhooks</span>
+                  <span className="px-3 py-1 bg-white/20 rounded-full text-sm">OAuth 2.0</span>
+                  <span className="px-3 py-1 bg-white/20 rounded-full text-sm">SDKs</span>
+                </div>
+              </div>
+              <div className="text-center">
+                <button className="px-6 py-3 bg-white text-violet-600 font-semibold rounded-xl hover:shadow-xl transition-all hover:-translate-y-0.5">
+                  Ver Documentação →
+                </button>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </section>
 
