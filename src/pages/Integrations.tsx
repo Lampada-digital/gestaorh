@@ -525,6 +525,7 @@ export default function Integrations() {
   const [syncProgress, setSyncProgress] = useState<Record<string, number>>({});
   const [showConfigModal, setShowConfigModal] = useState(false);
   const [showLogsModal, setShowLogsModal] = useState(false);
+  const [showSyncModal, setShowSyncModal] = useState(false);
   const [notification, setNotification] = useState<{ message: string; type: 'success' | 'error' | 'info' } | null>(null);
 
   const categories = [...new Set(integrations.map(i => i.category))];
@@ -563,6 +564,9 @@ export default function Integrations() {
   };
 
   const syncIntegration = (id: string) => {
+    const integration = integrations.find(i => i.id === id);
+    if (!integration) return;
+
     setIntegrations(integrations.map(i => {
       if (i.id === id) {
         return { ...i, status: 'syncing' as const };
@@ -571,6 +575,8 @@ export default function Integrations() {
     }));
 
     setSyncProgress({ ...syncProgress, [id]: 0 });
+    setSelectedIntegration(integration);
+    setShowSyncModal(true);
 
     const interval = setInterval(() => {
       setSyncProgress(prev => {
@@ -896,6 +902,168 @@ export default function Integrations() {
                     ))}
                   </div>
                 )}
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Sync Modal - Opens when syncing */}
+      <AnimatePresence>
+        {showSyncModal && selectedIntegration && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setShowSyncModal(false)}>
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="bg-gradient-to-r from-violet-600 to-indigo-600 p-6 text-white">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <span className="text-5xl">{selectedIntegration.icon}</span>
+                    <div>
+                      <h2 className="text-2xl font-bold">{selectedIntegration.name}</h2>
+                      <p className="text-sm text-violet-100">{selectedIntegration.category}</p>
+                    </div>
+                  </div>
+                  <button onClick={() => setShowSyncModal(false)} className="p-2 hover:bg-white/20 rounded-lg">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <div className="p-6 overflow-y-auto max-h-[70vh]">
+                {/* Sync Progress */}
+                {syncProgress[selectedIntegration.id] > 0 && syncProgress[selectedIntegration.id] < 100 && (
+                  <div className="mb-6">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm font-medium text-gray-700">Sincronizando dados...</span>
+                      <span className="text-sm font-bold text-violet-600">{syncProgress[selectedIntegration.id]}%</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-3">
+                      <motion.div
+                        className="bg-gradient-to-r from-violet-600 to-indigo-600 h-3 rounded-full"
+                        initial={{ width: 0 }}
+                        animate={{ width: `${syncProgress[selectedIntegration.id]}%` }}
+                        transition={{ duration: 0.2 }}
+                      />
+                    </div>
+                    <div className="mt-4 space-y-2">
+                      <div className="flex items-center gap-2 text-sm text-gray-600">
+                        <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+                        <span>Conectando ao servidor...</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm text-gray-600">
+                        <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+                        <span>Buscando dados atualizados...</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm text-gray-600">
+                        <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+                        <span>Processando registros...</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Sync Complete */}
+                {syncProgress[selectedIntegration.id] === 100 && (
+                  <div className="mb-6">
+                    <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4 mb-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center">
+                          <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                          </svg>
+                        </div>
+                        <div>
+                          <p className="text-sm font-semibold text-emerald-800">Sincronização concluída!</p>
+                          <p className="text-xs text-emerald-600">Todos os dados foram atualizados com sucesso</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Dashboard Preview */}
+                <div className="bg-gray-50 rounded-lg p-6">
+                  <h3 className="text-lg font-semibold text-gray-800 mb-4">
+                    {selectedIntegration.name} - Dashboard
+                  </h3>
+                  
+                  {/* Stats Grid */}
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                    <div className="bg-white rounded-lg p-4 border border-gray-200">
+                      <p className="text-xs text-gray-500 mb-1">Registros Totais</p>
+                      <p className="text-2xl font-bold text-gray-800">{selectedIntegration.records.toLocaleString('pt-BR')}</p>
+                      <p className="text-xs text-emerald-600 mt-1">+{Math.floor(Math.random() * 50) + 10} hoje</p>
+                    </div>
+                    <div className="bg-white rounded-lg p-4 border border-gray-200">
+                      <p className="text-xs text-gray-500 mb-1">Última Atualização</p>
+                      <p className="text-lg font-bold text-gray-800">Agora</p>
+                      <p className="text-xs text-emerald-600 mt-1">Em tempo real</p>
+                    </div>
+                    <div className="bg-white rounded-lg p-4 border border-gray-200">
+                      <p className="text-xs text-gray-500 mb-1">Status</p>
+                      <p className="text-lg font-bold text-emerald-600">Ativo</p>
+                      <p className="text-xs text-gray-500 mt-1">100% operacional</p>
+                    </div>
+                    <div className="bg-white rounded-lg p-4 border border-gray-200">
+                      <p className="text-xs text-gray-500 mb-1">Funcionalidades</p>
+                      <p className="text-2xl font-bold text-gray-800">{selectedIntegration.features.length}</p>
+                      <p className="text-xs text-gray-500 mt-1">ativas</p>
+                    </div>
+                  </div>
+
+                  {/* Features List */}
+                  <div className="mb-6">
+                    <h4 className="text-sm font-semibold text-gray-700 mb-3">Funcionalidades Ativas</h4>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                      {selectedIntegration.features.map((feature, i) => (
+                        <div key={i} className="flex items-center gap-2 bg-white p-3 rounded-lg border border-gray-200">
+                          <svg className="w-4 h-4 text-emerald-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                          </svg>
+                          <span className="text-sm text-gray-700">{feature}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Recent Activity */}
+                  <div className="mb-6">
+                    <h4 className="text-sm font-semibold text-gray-700 mb-3">Atividade Recente</h4>
+                    <div className="space-y-2">
+                      {selectedIntegration.logs.slice(0, 3).map((log, i) => (
+                        <div key={i} className="flex items-start gap-3 bg-white p-3 rounded-lg border border-gray-200">
+                          <div className={`w-2 h-2 mt-2 rounded-full flex-shrink-0 ${
+                            log.status === 'success' ? 'bg-emerald-500' :
+                            log.status === 'error' ? 'bg-red-500' : 'bg-blue-500'
+                          }`}></div>
+                          <div className="flex-1">
+                            <p className="text-sm font-medium text-gray-800">{log.action}</p>
+                            <p className="text-xs text-gray-500 mt-1">{log.timestamp}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="flex gap-3">
+                    <button className="flex-1 py-3 bg-violet-600 text-white font-medium rounded-lg hover:bg-violet-700 transition-colors">
+                      Abrir {selectedIntegration.name}
+                    </button>
+                    <button
+                      onClick={() => setShowSyncModal(false)}
+                      className="px-6 py-3 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors"
+                    >
+                      Fechar
+                    </button>
+                  </div>
+                </div>
               </div>
             </motion.div>
           </div>
