@@ -20,6 +20,7 @@ import DEI from './pages/DEI';
 import ThirdParty from './pages/ThirdParty';
 import GlobalMobility from './pages/GlobalMobility';
 import WFM from './pages/WFM';
+import Integrations from './pages/Integrations';
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState('landing');
@@ -51,6 +52,7 @@ export default function App() {
       case 'third-party': return <ThirdParty />;
       case 'global-mobility': return <GlobalMobility />;
       case 'wfm': return <WFM />;
+      case 'integrations': return <Integrations />;
       default: return <Landing navigate={navigate} />;
     }
   };
@@ -73,6 +75,7 @@ export default function App() {
     'third-party': 'Gestão de Terceiros',
     'global-mobility': 'Mobilidade Global',
     'wfm': 'Planejamento de Força de Trabalho',
+    'integrations': 'Integrações e Ferramentas',
   };
 
   // Landing e Login não têm sidebar

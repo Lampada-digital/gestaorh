@@ -22,6 +22,7 @@ const menuItems = [
   { id: 'third-party', label: 'Gestão de Terceiros', icon: '🤝' },
   { id: 'global-mobility', label: 'Mobilidade Global', icon: '✈️' },
   { id: 'wfm', label: 'Workforce Planning', icon: '📋' },
+  { id: 'integrations', label: 'Integrações', icon: '🔌' },
 ];
 
 export default function Sidebar({ currentPage, setCurrentPage, isOpen }: SidebarProps) {
