@@ -2,7 +2,6 @@ interface SidebarProps {
   currentPage: string;
   setCurrentPage: (page: string) => void;
   isOpen: boolean;
-  setIsOpen: (open: boolean) => void;
 }
 
 const menuItems = [
@@ -18,13 +17,13 @@ export default function Sidebar({ currentPage, setCurrentPage, isOpen }: Sidebar
   return (
     <aside className={`fixed left-0 top-0 h-full bg-gradient-to-b from-slate-900 to-slate-800 text-white transition-all duration-300 z-20 ${isOpen ? 'w-64' : 'w-16'}`}>
       <div className="flex items-center gap-3 px-4 py-5 border-b border-slate-700">
-        <div className="w-8 h-8 bg-gradient-to-br from-emerald-400 to-blue-500 rounded-lg flex items-center justify-center flex-shrink-0">
-          <span className="text-white font-bold text-sm">F+</span>
+        <div className="w-8 h-8 bg-gradient-to-br from-violet-400 to-indigo-500 rounded-lg flex items-center justify-center flex-shrink-0">
+          <span className="text-white font-bold text-sm">H</span>
         </div>
         {isOpen && (
           <div>
-            <h2 className="font-bold text-base">FolhaPlus</h2>
-            <p className="text-xs text-slate-400">Gestão de Folha</p>
+            <h2 className="font-bold text-base">HRCloud</h2>
+            <p className="text-xs text-slate-400">Gestão de RH</p>
           </div>
         )}
       </div>
